@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: #F7F7F7;
+    font-size: 93.75%; /* Slightly zoomed out base scaling (15px) */
+  }
+
+  body {
+    background-color: #F7F7F7;
+    color: #0F172A;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Eye-Care Soft Light Grey Canvas Background */
+.bg-dashboard-canvas {
+  background-color: #F7F7F7;
+}
+
+/* Hide scrollbar while keeping scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
