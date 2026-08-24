@@ -13,7 +13,7 @@ function SketchLoopSVG() {
       <path 
         d="M 112 24 C 108 8, 28 5, 10 18 C 3 28, 22 36, 68 36 C 98 36, 114 30, 116 22" 
         stroke="#2196F3" 
-        strokeWidth="1.8" 
+        strokeWidth="2" 
         strokeLinecap="round"
         strokeLinejoin="round"
         pathLength="100"
@@ -26,7 +26,6 @@ function SketchLoopSVG() {
 
 export default function Navbar() {
   const handleNavClick = (e, targetId) => {
-    // Immediately remove focus so the sketch circle mark goes away upon clicking
     if (e && e.currentTarget) {
       e.currentTarget.blur();
     }
@@ -39,85 +38,94 @@ export default function Navbar() {
   };
 
   return (
-    <div className="sticky top-0 z-50 bg-[#F7F7F7]/90 backdrop-blur-md py-3 transition-all border-b border-slate-200/60">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
+    <div className="sticky top-0 z-50 bg-transparent py-5 transition-all border-none">
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 flex items-center justify-between gap-6">
         
-        {/* Brand Logo */}
+        {/* Brand Logo - Slightly Bigger & Bold */}
         <a 
           href="#" 
           onClick={(e) => handleNavClick(e, null)}
           className="inline-flex items-center group shrink-0 outline-none"
         >
-          <span className="font-extrabold text-xl sm:text-2xl tracking-tight text-slate-950 font-sans">
+          <span className="font-black text-2xl sm:text-3xl tracking-tight text-slate-950 font-sans">
             the<span className="text-[#2196F3]">prep</span>route
           </span>
         </a>
 
-        {/* Center Nav Pills */}
-        <div className="bg-white border border-[#D0E2F5]/90 rounded-full px-4 py-1.5 sm:px-6 sm:py-2 shadow-[0_4px_20px_-4px_rgba(13,71,161,0.08)] hidden md:flex items-center justify-center gap-6 sm:gap-8">
-          <nav className="flex items-center gap-6 text-xs font-semibold text-slate-700">
-            
-            <div className="relative group">
-              <a 
-                href="#features" 
-                onClick={(e) => handleNavClick(e, '#features')}
-                className="relative inline-block px-2.5 py-1 font-extrabold text-slate-800 hover:text-[#2196F3] transition-colors"
-              >
-                <span>Features</span>
-                <SketchLoopSVG />
-              </a>
-            </div>
+        {/* Free-Flowing Center Nav Links (Zero Box / Zero Border Wrapper) */}
+        <nav className="hidden md:flex items-center justify-center gap-8 lg:gap-10 text-sm sm:text-base font-black text-slate-800">
+          
+          <div className="relative group">
+            <a 
+              href="#loop" 
+              onClick={(e) => handleNavClick(e, '#loop')}
+              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+            >
+              <span>The Loop</span>
+              <SketchLoopSVG />
+            </a>
+          </div>
 
-            <div className="relative group">
-              <a 
-                href="#pricing" 
-                onClick={(e) => handleNavClick(e, '#pricing')}
-                className="relative inline-block px-2.5 py-1 font-extrabold text-slate-800 hover:text-[#2196F3] transition-colors"
-              >
-                <span>Pricing</span>
-                <SketchLoopSVG />
-              </a>
-            </div>
+          <div className="relative group">
+            <a 
+              href="#features" 
+              onClick={(e) => handleNavClick(e, '#features')}
+              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+            >
+              <span>Features</span>
+              <SketchLoopSVG />
+            </a>
+          </div>
 
-            <div className="relative group">
-              <a 
-                href="#exams" 
-                onClick={(e) => handleNavClick(e, '#exams')}
-                className="relative inline-block px-2.5 py-1 font-extrabold text-slate-800 hover:text-[#2196F3] transition-colors"
-              >
-                <span>Exam Offerings</span>
-                <SketchLoopSVG />
-              </a>
-            </div>
+          <div className="relative group">
+            <a 
+              href="#pricing" 
+              onClick={(e) => handleNavClick(e, '#pricing')}
+              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+            >
+              <span>Pricing</span>
+              <SketchLoopSVG />
+            </a>
+          </div>
 
-            <div className="relative group">
-              <a 
-                href="#faq" 
-                onClick={(e) => handleNavClick(e, '#faq')}
-                className="relative inline-block px-2.5 py-1 font-extrabold text-slate-800 hover:text-[#2196F3] transition-colors"
-              >
-                <span>FAQ</span>
-                <SketchLoopSVG />
-              </a>
-            </div>
+          <div className="relative group">
+            <a 
+              href="#exams" 
+              onClick={(e) => handleNavClick(e, '#exams')}
+              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+            >
+              <span>Exam Offerings</span>
+              <SketchLoopSVG />
+            </a>
+          </div>
 
-          </nav>
-        </div>
+          <div className="relative group">
+            <a 
+              href="#faq" 
+              onClick={(e) => handleNavClick(e, '#faq')}
+              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+            >
+              <span>FAQ</span>
+              <SketchLoopSVG />
+            </a>
+          </div>
 
-        {/* Right CTA Action Buttons */}
-        <div className="flex items-center gap-3 shrink-0">
+        </nav>
+
+        {/* Right CTA Action Button - Slightly Bigger & Spaced */}
+        <div className="flex items-center gap-4 shrink-0">
           <a 
             href="#pricing" 
             onClick={(e) => handleNavClick(e, '#pricing')}
-            className="text-xs font-extrabold text-slate-700 hover:text-[#2196F3] px-3 py-2 transition-colors hidden sm:block"
+            className="text-sm font-black text-slate-800 hover:text-[#2196F3] px-3 py-2 transition-colors hidden sm:block"
           >
             Pricing
           </a>
           <button 
             onClick={(e) => { e.currentTarget.blur(); alert('Opening Mentor Consultation Modal...'); }}
-            className="flex items-center gap-2 bg-[#2196F3] hover:bg-[#1976D2] text-white font-extrabold text-xs px-5 py-2.5 rounded-full shadow-xs transition-all hover:scale-102 active:scale-98"
+            className="flex items-center gap-2 bg-[#2196F3] hover:bg-[#1976D2] text-white font-black text-xs sm:text-sm px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-98"
           >
-            <UserCheck className="w-3.5 h-3.5 stroke-[2.5]" />
+            <UserCheck className="w-4 h-4 stroke-[2.5]" />
             <span>Talk to IIM Mentor</span>
           </button>
         </div>
@@ -126,3 +134,4 @@ export default function Navbar() {
     </div>
   );
 }
+
