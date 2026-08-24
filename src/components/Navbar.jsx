@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserCheck } from 'lucide-react';
 
 // Hand-Drawn Sketch Loop SVG Component (Animates on hover, disappears on click)
@@ -25,6 +25,21 @@ function SketchLoopSVG() {
 }
 
 export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 60) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleNavClick = (e, targetId) => {
     if (e && e.currentTarget) {
       e.currentTarget.blur();
@@ -38,28 +53,34 @@ export default function Navbar() {
   };
 
   return (
-    <div className="sticky top-0 z-50 bg-transparent py-5 transition-all border-none">
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 flex items-center justify-between gap-6">
+    <div className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-all duration-500 ease-out px-4 sm:px-8 ${isScrolled ? 'py-3' : 'py-5'}`}>
+      <div 
+        className={`mx-auto pointer-events-auto flex items-center justify-between transition-all duration-500 ease-out ${
+          isScrolled 
+            ? 'max-w-5xl rounded-full bg-white/55 backdrop-blur-xl border border-white/80 shadow-[0_12px_40px_rgba(33,150,243,0.12)] px-6 sm:px-8 py-2.5' 
+            : 'max-w-[1440px] bg-transparent border-none px-4 sm:px-8 py-1'
+        }`}
+      >
         
-        {/* Brand Logo - Slightly Bigger & Bold */}
+        {/* Brand Logo */}
         <a 
           href="#" 
           onClick={(e) => handleNavClick(e, null)}
           className="inline-flex items-center group shrink-0 outline-none"
         >
-          <span className="font-black text-2xl sm:text-3xl tracking-tight text-slate-950 font-sans">
+          <span className={`font-black tracking-tight text-slate-950 font-sans transition-all duration-300 ${isScrolled ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'}`}>
             the<span className="text-[#2196F3]">prep</span>route
           </span>
         </a>
 
-        {/* Free-Flowing Center Nav Links (Zero Box / Zero Border Wrapper) */}
-        <nav className="hidden md:flex items-center justify-center gap-8 lg:gap-10 text-sm sm:text-base font-black text-slate-800">
+        {/* Center Nav Links */}
+        <nav className={`hidden md:flex items-center justify-center text-slate-800 transition-all duration-300 ${isScrolled ? 'gap-6 lg:gap-8 text-xs sm:text-sm font-extrabold' : 'gap-8 lg:gap-10 text-sm sm:text-base font-black'}`}>
           
           <div className="relative group">
             <a 
               href="#loop" 
               onClick={(e) => handleNavClick(e, '#loop')}
-              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+              className="relative inline-block px-2.5 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
             >
               <span>The Loop</span>
               <SketchLoopSVG />
@@ -70,7 +91,7 @@ export default function Navbar() {
             <a 
               href="#features" 
               onClick={(e) => handleNavClick(e, '#features')}
-              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+              className="relative inline-block px-2.5 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
             >
               <span>Features</span>
               <SketchLoopSVG />
@@ -81,7 +102,7 @@ export default function Navbar() {
             <a 
               href="#pricing" 
               onClick={(e) => handleNavClick(e, '#pricing')}
-              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+              className="relative inline-block px-2.5 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
             >
               <span>Pricing</span>
               <SketchLoopSVG />
@@ -90,20 +111,9 @@ export default function Navbar() {
 
           <div className="relative group">
             <a 
-              href="#exams" 
-              onClick={(e) => handleNavClick(e, '#exams')}
-              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
-            >
-              <span>Exam Offerings</span>
-              <SketchLoopSVG />
-            </a>
-          </div>
-
-          <div className="relative group">
-            <a 
               href="#faq" 
               onClick={(e) => handleNavClick(e, '#faq')}
-              className="relative inline-block px-3 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
+              className="relative inline-block px-2.5 py-1 text-slate-800 hover:text-[#2196F3] transition-colors"
             >
               <span>FAQ</span>
               <SketchLoopSVG />
@@ -112,20 +122,15 @@ export default function Navbar() {
 
         </nav>
 
-        {/* Right CTA Action Button - Slightly Bigger & Spaced */}
-        <div className="flex items-center gap-4 shrink-0">
-          <a 
-            href="#pricing" 
-            onClick={(e) => handleNavClick(e, '#pricing')}
-            className="text-sm font-black text-slate-800 hover:text-[#2196F3] px-3 py-2 transition-colors hidden sm:block"
-          >
-            Pricing
-          </a>
+        {/* Right CTA Action Button */}
+        <div className="flex items-center shrink-0">
           <button 
             onClick={(e) => { e.currentTarget.blur(); alert('Opening Mentor Consultation Modal...'); }}
-            className="flex items-center gap-2 bg-[#2196F3] hover:bg-[#1976D2] text-white font-black text-xs sm:text-sm px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-98"
+            className={`flex items-center gap-2 bg-[#2196F3] hover:bg-[#1976D2] text-white font-extrabold rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-98 ${
+              isScrolled ? 'text-xs px-4 py-2' : 'text-xs sm:text-sm px-6 py-3'
+            }`}
           >
-            <UserCheck className="w-4 h-4 stroke-[2.5]" />
+            <UserCheck className={`${isScrolled ? 'w-3.5 h-3.5' : 'w-4 h-4'} stroke-[2.5]`} />
             <span>Talk to IIM Mentor</span>
           </button>
         </div>
@@ -134,4 +139,5 @@ export default function Navbar() {
     </div>
   );
 }
+
 

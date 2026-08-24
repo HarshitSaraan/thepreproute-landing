@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import PrepRouteLoopSection from './components/PrepRouteLoopSection';
 import FeaturesSection from './components/FeaturesSection';
-import ExamOfferingsSection from './components/ExamOfferingsSection';
 import PricingSection from './components/PricingSection';
 import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
@@ -56,16 +55,13 @@ function App() {
         {/* 4. Features Section ("MORE ENGAGEMENT, EVERY DAY" 5-Feature Interactive Showcase) */}
         <FeaturesSection />
 
-        {/* 5. Individual Exam Offerings Section */}
-        <ExamOfferingsSection />
-
-        {/* 6. Pricing Section */}
+        {/* 5. Pricing Section */}
         <PricingSection />
 
-        {/* 7. Frequently Asked Questions Section */}
+        {/* 6. Frequently Asked Questions Section */}
         <FAQSection />
 
-        {/* 8. Cool Footer */}
+        {/* 7. Cool Footer */}
         <Footer />
       </div>
     </div>
@@ -73,5 +69,6 @@ function App() {
 }
 
 export default App;
+
 
 
