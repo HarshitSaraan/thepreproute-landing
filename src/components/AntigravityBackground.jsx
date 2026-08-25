@@ -1,23 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 
-// Google Antigravity Full Spectrum Palette:
-// Google Blue -> Indigo -> Violet -> Purple -> Fuchsia -> Deep Pink -> Coral Rose -> Cyan -> Blue
-const SPECTRUM_COLORS = [
-  '#4285F4', // Google Blue
-  '#1A73E8', // Royal Blue
-  '#2563EB', // Vibrant Blue
-  '#3B82F6', // Cobalt
-  '#6366F1', // Indigo
-  '#7C3AED', // Deep Purple
-  '#8B5CF6', // Violet
-  '#A855F7', // Bright Purple
-  '#C026D3', // Fuchsia
-  '#DB2777', // Deep Rose
-  '#EC4899', // Pink
-  '#F43F5E', // Coral Rose
-  '#EA4335', // Google Red/Coral
-  '#06B6D4', // Teal Cyan
-  '#0284C7', // Sky Blue
+// Shades of Blue Spectrum (Navy, Royal Blue, Brand Blue, Electric Blue, Sky Blue, Cyan Blue)
+const BLUE_SHADES = [
+  '#1E3A8A', // Deep Navy Blue 900
+  '#1D4ED8', // Royal Blue 700
+  '#1A73E8', // Google Blue
+  '#2563EB', // Vibrant Blue 600
+  '#3B82F6', // Cobalt 500
+  '#60A5FA', // Sky Blue 400
+  '#0284C7', // Cyan Blue 600
+  '#0EA5E9', // Vivid Sky 500
+  '#38BDF8', // Light Sky 400
+  '#93C5FD', // Pastel Blue 300
+  '#BFDBFE', // Soft Accent Blue 200
 ];
 
 export default function AntigravityBackground() {
@@ -84,8 +79,8 @@ export default function AntigravityBackground() {
     function getColorForAngle(angle) {
       let norm = (angle % (Math.PI * 2)) / (Math.PI * 2);
       if (norm < 0) norm += 1;
-      const index = Math.floor(norm * SPECTRUM_COLORS.length) % SPECTRUM_COLORS.length;
-      return SPECTRUM_COLORS[index];
+      const index = Math.floor(norm * BLUE_SHADES.length) % BLUE_SHADES.length;
+      return BLUE_SHADES[index];
     }
 
     function initParticles() {
