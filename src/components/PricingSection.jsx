@@ -8,10 +8,6 @@ export default function PricingSection() {
         
         {/* Section Header */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-1.5 bg-[#E3F2FD] border border-[#90CAF9]/60 text-[#2196F3] text-xs font-black uppercase px-3.5 py-1 rounded-full mb-3 shadow-2xs">
-            <Sparkles className="w-3.5 h-3.5 text-[#2196F3]" />
-            <span>TRANSPARENT INVESTMENT IN YOUR FUTURE</span>
-          </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-950 tracking-tight mb-4">
             Simple, Transparent <span className="text-[#2196F3]">Pricing</span>
           </h2>

@@ -84,10 +84,6 @@ export default function FeaturesSection() {
         
         {/* Section Heading */}
         <div className="text-center mb-6 max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-1.5 bg-white border border-[#90CAF9]/60 text-[#2196F3] text-xs font-black uppercase px-4 py-1.5 rounded-full mb-3 shadow-2xs">
-            <Sparkles className="w-4 h-4 text-[#2196F3]" />
-            <span>MORE ENGAGEMENT, EVERY SINGLE DAY</span>
-          </span>
           <h2 className="text-3xl sm:text-5xl font-black text-slate-950 uppercase tracking-tight leading-tight">
             MORE <span className="text-[#2196F3]">ENGAGEMENT</span>, EVERY DAY.
           </h2>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, ShieldCheck, UserCheck, Star, ArrowRight, CheckCircle, Video, Award } from 'lucide-react';
+import AntigravityBackground from './AntigravityBackground';
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState('');
@@ -31,17 +32,14 @@ export default function HeroSection() {
   return (
     <section className="min-h-[90vh] flex flex-col justify-center items-center text-center bg-transparent px-6 sm:px-12 md:px-24 pt-24 sm:pt-28 lg:pt-32 pb-20 relative overflow-hidden">
       
-      {/* Background Radial Glow - Centered lower down so top header canvas is pure solid #F7F7F7 */}
+      {/* Google Antigravity-Style Particle Vortex Background */}
+      <AntigravityBackground />
+
+      {/* Background Radial Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#2196F3]/6 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-5xl relative z-10 flex flex-col items-center">
         
-        {/* Top Pill Tag */}
-        <span className="inline-flex items-center gap-2 bg-white border border-[#D0E2F5] text-[#2196F3] text-xs font-black px-4 py-2 rounded-full mb-8 shadow-[0_2px_10px_rgba(33,150,243,0.12)] hover:border-[#90CAF9] transition-all">
-          <Sparkles className="w-4 h-4 text-[#2196F3] animate-pulse" />
-          <span>BUILT BY IIM STUDENTS • DESIGNED FOR IPMAT 2026</span>
-        </span>
-
         {/* Headline */}
         <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-slate-950 leading-[1.06] mb-6 flex flex-col items-center">
           <span>Because every</span>
