@@ -10,7 +10,7 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="font-sans text-slate-900 bg-[#F7F7F7] selection:bg-[#90CAF9] selection:text-[#2196F3] min-h-screen relative overflow-x-hidden">
+    <div className="font-sans text-slate-900 bg-[#F7F7F7] selection:bg-[#90CAF9] selection:text-[#2196F3] min-h-screen relative overflow-clip">
       
       {/* GLOBAL LIGHT BLUEISH AMBIENT GLOW CANVASES SPANNING ALL OVER THE WEBSITE */}
       

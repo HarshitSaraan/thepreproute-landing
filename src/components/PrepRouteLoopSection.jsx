@@ -129,7 +129,7 @@ export default function PrepRouteLoopSection() {
     <section 
       id="loop" 
       ref={sectionRef}
-      className="py-24 px-6 sm:px-12 md:px-24 bg-transparent text-slate-900 relative overflow-hidden border-t border-slate-200/80"
+      className="py-24 px-6 sm:px-12 md:px-24 bg-transparent text-slate-900 relative"
     >
       {/* Background Ambient Glow */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#2196F3]/5 rounded-full blur-3xl pointer-events-none" />

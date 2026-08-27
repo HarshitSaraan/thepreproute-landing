@@ -3,7 +3,7 @@ import { CheckCircle2, XCircle, Sparkles, UserCheck } from 'lucide-react';
 
 export default function PricingSection() {
   return (
-    <section id="pricing" className="py-24 bg-[#F7F7F7] px-6 sm:px-12 md:px-24 relative overflow-hidden">
+    <section id="pricing" className="py-24 bg-transparent px-6 sm:px-12 md:px-24 relative">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}

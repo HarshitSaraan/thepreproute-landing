@@ -30,13 +30,14 @@ export default function HeroSection() {
   }, [typedText, isDeleting]);
 
   return (
-    <section className="min-h-[90vh] flex flex-col justify-center items-center text-center bg-transparent px-6 sm:px-12 md:px-24 pt-24 sm:pt-28 lg:pt-32 pb-20 relative overflow-hidden">
+    <section className="min-h-[90vh] flex flex-col justify-center items-center text-center bg-transparent px-6 sm:px-12 md:px-24 pt-24 sm:pt-28 lg:pt-32 pb-20 relative">
       
       {/* Google Antigravity-Style Particle Vortex Background */}
       <AntigravityBackground />
 
-      {/* Background Radial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#2196F3]/6 rounded-full blur-3xl pointer-events-none" />
+      {/* Ambient Blue Hint Glows (Same as 'Why Us' section) */}
+      <div className="absolute top-[30%] left-[60%] w-[600px] h-[600px] bg-[#2196F3]/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-[#64B5F6]/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-5xl relative z-10 flex flex-col items-center">
         

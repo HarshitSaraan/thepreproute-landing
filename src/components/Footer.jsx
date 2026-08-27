@@ -3,7 +3,7 @@ import { UserCheck, Sparkles, ArrowRight, ShieldCheck, Mail, MapPin } from 'luci
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-white text-slate-800 pt-20 pb-12 border-t border-[#D0E2F5] relative overflow-hidden">
+    <footer className="w-full bg-transparent text-slate-800 pt-20 pb-12 relative">
       {/* Background glow accents */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#2196F3]/5 rounded-full blur-3xl pointer-events-none" />
       

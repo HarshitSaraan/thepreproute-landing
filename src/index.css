@@ -7,7 +7,7 @@
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
     background-color: #F7F7F7;
     font-size: 93.75%; /* Slightly zoomed out base scaling (15px) */
@@ -19,7 +19,7 @@
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     font-size: 0.95rem;
     line-height: 1.5;
-    overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
     margin: 0;
     padding: 0;

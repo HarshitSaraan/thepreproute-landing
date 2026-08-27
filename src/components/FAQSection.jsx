@@ -37,7 +37,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="py-20 lg:py-28 px-6 sm:px-12 md:px-24 bg-[#F7F7F7] relative">
+    <section id="faq" className="py-20 lg:py-28 px-6 sm:px-12 md:px-24 bg-transparent relative">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         
         {/* Left Column: Heading & Intro */}

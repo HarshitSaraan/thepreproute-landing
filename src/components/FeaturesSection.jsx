@@ -1,486 +1,336 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ClipboardList, BarChart2, BookOpen, Layers, PenTool, ArrowRight, Sparkles, 
-  CheckCircle2, RotateCw, Clock, ChevronRight, ChevronLeft, Zap, TrendingUp, HelpCircle, MousePointer
-} from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useSpring, useMotionValueEvent, AnimatePresence } from 'framer-motion';
+import { Target, BarChart2, Repeat, LayoutTemplate, BrainCircuit, CheckCircle2 } from 'lucide-react';
 
-const sampleFlashcards = [
+const features = [
   {
-    question: "Quadratic Equation: Sum & Product of Roots for ax² + bx + c = 0?",
-    answer: "Sum of Roots = -b/a  |  Product of Roots = c/a",
-    category: "Higher Algebra"
+    id: "01",
+    title: "Topic-Wise Tests",
+    desc: "Practice relevant questions across all 29 sub-topics.",
+    icon: Target
   },
   {
-    question: "Speed, Distance & Time: Average Speed for equal distances at speeds x and y?",
-    answer: "Average Speed = (2xy) / (x + y)",
-    category: "Arithmetic"
+    id: "02",
+    title: "Performance Analytics",
+    desc: "Track weekly accuracy and projected rank in real-time.",
+    icon: BarChart2
   },
   {
-    question: "IPMAT Vocabulary: What does 'PERSPICACIOUS' mean?",
-    answer: "Having a ready insight into and understanding of things; shrewd & insightful.",
-    category: "Verbal Ability"
+    id: "03",
+    title: "Mistake Bank Vault",
+    desc: "Revisit incorrect answers with AI-guided resolutions.",
+    icon: Repeat
+  },
+  {
+    id: "04",
+    title: "Full Length Mocks",
+    desc: "Experience exact NTA & IIM interface with percentiles.",
+    icon: LayoutTemplate
+  },
+  {
+    id: "05",
+    title: "Smart Revision Decks",
+    desc: "Rapidly revise essential formulas before exam day.",
+    icon: BrainCircuit
   }
 ];
 
+// --- DEMO COMPONENTS ---
+function DemoTests() {
+  return (
+    <div className="flex flex-col gap-4 w-full max-w-sm">
+      <motion.div className="h-4 w-1/3 bg-slate-200 rounded" />
+      <div className="grid grid-cols-2 gap-4">
+        {[1,2,3,4].map(i => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.15, duration: 0.4 }}
+            className={`h-16 rounded-xl border-2 flex items-center justify-center ${i===2 ? 'border-[#2196F3] bg-[#E3F2FD] shadow-[0_0_20px_rgba(33,150,243,0.3)]' : 'border-slate-100 bg-white'}`}
+          >
+            {i===2 && <CheckCircle2 className="text-[#2196F3] w-6 h-6" />}
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DemoAnalytics() {
+  return (
+    <div className="flex items-end justify-center gap-4 h-48 w-full">
+      {[40, 70, 45, 90, 60].map((h, i) => (
+        <motion.div
+          key={i}
+          initial={{ height: 0 }}
+          animate={{ height: `${h}%` }}
+          transition={{ delay: i * 0.1, duration: 0.6, type: 'spring' }}
+          className={`w-12 rounded-t-lg relative ${i===3 ? 'bg-[#2196F3]' : 'bg-[#E3F2FD]'}`}
+        >
+          {i===3 && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: -20 }}
+              transition={{ delay: 0.8 }}
+              className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#0D47A1] text-white text-[10px] font-bold px-2 py-1 rounded"
+            >
+              +14%
+            </motion.div>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function DemoVault() {
+  return (
+    <div className="relative w-48 h-48 flex items-center justify-center perspective-1000">
+      <motion.div 
+        animate={{ rotateY: [0, 180, 180, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        style={{ transformStyle: 'preserve-3d' }}
+        className="w-full h-full rounded-2xl shadow-xl relative"
+      >
+         <div className="absolute inset-0 flex flex-col items-center justify-center bg-rose-50 border-2 border-rose-200 rounded-2xl p-4 text-center" style={{ backfaceVisibility: 'hidden' }}>
+            <Repeat className="w-8 h-8 text-rose-400 mb-2" />
+            <span className="text-rose-600 font-bold text-sm">Mistake Logged</span>
+         </div>
+         <div className="absolute inset-0 flex flex-col items-center justify-center bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-4 text-center" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+            <CheckCircle2 className="w-8 h-8 text-emerald-500 mb-2" />
+            <span className="text-emerald-700 font-bold text-sm">AI Resolution</span>
+         </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function DemoMocks() {
+  return (
+    <div className="w-full max-w-sm bg-white border border-slate-200 shadow-xl rounded-xl overflow-hidden">
+      <div className="bg-slate-50 border-b border-slate-200 px-4 py-3 flex justify-between items-center">
+        <div className="w-20 h-3 bg-slate-200 rounded" />
+        <div className="w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
+          <motion.div 
+             initial={{ width: '100%' }}
+             animate={{ width: '20%' }}
+             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+             className="h-full bg-[#2196F3]"
+          />
+        </div>
+      </div>
+      <div className="p-4 space-y-4">
+        <div className="w-3/4 h-3 bg-slate-200 rounded" />
+        <div className="pt-2 space-y-2">
+          {[1,2,3].map(i => (
+             <motion.div 
+                key={i}
+                whileHover={{ scale: 1.02, borderColor: '#2196F3' }}
+                className="w-full h-10 border border-slate-100 bg-slate-50 rounded-lg cursor-pointer transition-colors"
+             />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DemoDecks() {
+  return (
+    <div className="relative w-48 h-64">
+       {[0, 1, 2].map(i => (
+         <motion.div
+           key={i}
+           animate={i === 0 ? {
+             y: [0, -40, 0],
+             x: [0, 100, 0],
+             rotate: [0, 10, 0],
+             opacity: [1, 0, 1],
+             zIndex: [3, 1, 3]
+           } : {
+             y: i * 15,
+             scale: 1 - (i * 0.05),
+             zIndex: 3 - i
+           }}
+           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
+           className="absolute inset-0 bg-white border-2 border-[#D0E2F5] rounded-xl shadow-lg flex items-center justify-center p-6 text-center"
+         >
+           <span className="text-[#0D47A1] font-black text-lg">Card {3-i}</span>
+         </motion.div>
+       ))}
+    </div>
+  );
+}
+
+// --- MAIN SECTION ---
 export default function FeaturesSection() {
-  const sectionRef = useRef(null);
+  const containerRef = useRef(null);
   
-  // Step State: 0 (Card 1 top), 1 (Card 1 swiped), 2 (Card 2 swiped), 3 (Card 3 swiped), 4 (Card 4 swiped, Card 5 base)
-  const [step, setStep] = useState(0);
-  const isCooldown = useRef(false);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  // Intercept wheel scroll to step through cards when section is focused
-  useEffect(() => {
-    const handleWheel = (e) => {
-      if (!sectionRef.current) return;
-      
-      const rect = sectionRef.current.getBoundingClientRect();
-      // Section focused when header is near top of viewport
-      const inView = rect.top <= 140 && rect.bottom >= window.innerHeight / 2;
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });
+  
+  // Progress maps to steps 0, 1, 2, 3, 4
+  const stepValue = useTransform(smoothProgress, [0, 1], [0, features.length - 1]);
+  // Line fill maps to percentage
+  const lineFill = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
 
-      if (inView) {
-        // If scrolling down and we haven't finished all card swipes
-        if (e.deltaY > 0 && step < 4) {
-          if (e.cancelable) e.preventDefault();
-          if (isCooldown.current) return;
-          isCooldown.current = true;
-          setStep((prev) => Math.min(prev + 1, 4));
-          setTimeout(() => { isCooldown.current = false; }, 350);
-        } 
-        // If scrolling up and we are not back at Card 1
-        else if (e.deltaY < 0 && step > 0) {
-          if (e.cancelable) e.preventDefault();
-          if (isCooldown.current) return;
-          isCooldown.current = true;
-          setStep((prev) => Math.max(prev - 1, 0));
-          setTimeout(() => { isCooldown.current = false; }, 350);
-        }
-      }
-    };
+  const [activeIndex, setActiveIndex] = useState(0);
 
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-    };
-  }, [step]);
+  useMotionValueEvent(stepValue, "change", (latest) => {
+    setActiveIndex(Math.round(latest));
+  });
 
-  // Widget states
-  const [selectedOption, setSelectedOption] = useState(1);
-  const [isVaultFlipped, setIsVaultFlipped] = useState(false);
-  const [flashcardIndex, setFlashcardIndex] = useState(0);
-  const [isFlashcardFlipped, setIsFlashcardFlipped] = useState(false);
+  const renderDemo = (index) => {
+    switch(index) {
+      case 0: return <DemoTests />;
+      case 1: return <DemoAnalytics />;
+      case 2: return <DemoVault />;
+      case 3: return <DemoMocks />;
+      case 4: return <DemoDecks />;
+      default: return null;
+    }
+  };
 
   return (
     <section 
       id="features" 
-      ref={sectionRef} 
-      className="relative bg-transparent border-t border-slate-200/80 text-slate-900 py-16 sm:py-24 px-6 sm:px-12 md:px-16 min-h-screen flex flex-col justify-center items-center"
+      ref={containerRef} 
+      // 500vh ensures a smooth scroll journey across 5 features
+      className="relative h-[500vh] bg-transparent text-slate-900"
     >
-      {/* Background Glow Accents */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#2196F3]/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl w-full mx-auto relative z-10">
+      <div className="sticky top-0 h-screen w-full flex flex-col pt-16 sm:pt-24">
         
-        {/* Section Heading */}
-        <div className="text-center mb-6 max-w-3xl mx-auto">
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-950 uppercase tracking-tight leading-tight">
-            MORE <span className="text-[#2196F3]">ENGAGEMENT</span>, EVERY DAY.
-          </h2>
+        {/* Ambient Glows */}
+        <div className="absolute top-[20%] left-[60%] w-[600px] h-[600px] bg-[#2196F3]/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-[#64B5F6]/10 rounded-full blur-[100px] pointer-events-none" />
+
+        {/* Centered Massive Title */}
+        <div className="w-full text-center relative z-20 mb-8 lg:mb-12 shrink-0 px-6">
+           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tighter uppercase">
+             Why Us?
+           </h2>
+        </div>
+
+        <div className="max-w-[1440px] w-full mx-auto px-6 sm:px-12 md:px-16 relative z-10 flex flex-col lg:flex-row gap-12 lg:gap-24 items-center flex-1 min-h-0 pb-12">
           
-          {/* Scroll & Control Bar */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-2 text-xs font-extrabold text-slate-700 bg-white border border-slate-200 px-4 py-1.5 rounded-full shadow-2xs">
-              <MousePointer className="w-4 h-4 text-[#2196F3] animate-bounce" />
-              <span>
-                {step < 4 ? `Scroll mouse down to swipe top card (${step + 1}/5)` : '✓ All 5 cards swiped'}
+          {/* LEFT COLUMN: PROGRESSION PATH */}
+          <div className="w-full lg:w-1/2 flex flex-col h-full justify-center">
+            
+            {/* Header / Progress Indicator */}
+            <div className="mb-8 lg:mb-12 pl-4 lg:pl-16">
+              <span className="text-[10px] font-black tracking-widest uppercase text-[#2196F3] bg-[#E3F2FD] px-3 py-1 rounded-full">
+                Features Journey
               </span>
+              <div className="text-sm font-bold text-slate-400 mt-4 flex items-end gap-1">
+                <span className="text-slate-950 text-4xl lg:text-5xl font-black leading-none">0{activeIndex + 1}</span> 
+                <span className="text-lg pb-1">/ 0{features.length}</span>
+              </div>
             </div>
 
-            {/* Clickable Step Dots & Navigation */}
-            <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-full p-1 shadow-2xs">
-              <button
-                onClick={() => setStep((prev) => Math.max(prev - 1, 0))}
-                disabled={step === 0}
-                className="p-1.5 rounded-full text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              
-              <div className="flex gap-1.5 px-1.5">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <button
-                    key={i}
-                    onClick={() => setStep(i)}
-                    className={`h-2.5 rounded-full transition-all ${
-                      step === i ? 'bg-[#2196F3] w-6' : 'bg-slate-300 hover:bg-slate-400 w-2.5'
-                    }`}
+              {/* Path Container */}
+            <div className="relative flex flex-col gap-6 lg:gap-10">
+              {/* Background Line */}
+              <div className="absolute left-[24px] lg:left-[36px] top-[30px] bottom-[30px] w-0.5 bg-slate-200 -translate-x-1/2" />
+              {/* Active Animated Fill Line */}
+              <motion.div 
+                className="absolute left-[24px] lg:left-[36px] top-[30px] w-0.5 bg-[#2196F3] -translate-x-1/2" 
+                style={{ height: lineFill }}
+              />
+
+              {features.map((feat, i) => {
+                const isCompleted = activeIndex > i;
+                const isActive = activeIndex === i;
+                
+                return (
+                  <div key={feat.id} className="relative pl-[60px] lg:pl-[80px] py-2 lg:py-4">
+                    {/* Node / Node Icon */}
+                    <div className="absolute left-[24px] lg:left-[36px] top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-[#F7F7F7] py-2">
+                      <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
+                        isCompleted ? 'bg-[#2196F3]' :
+                        isActive ? 'bg-white border-[3px] border-[#2196F3] shadow-[0_0_20px_rgba(33,150,243,0.5)]' :
+                        'bg-white border-[2px] border-slate-300'
+                      }`}>
+                        {isCompleted && (
+                          <svg className="w-4 h-4 lg:w-5 lg:h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                        {isActive && (
+                          <div className="w-2.5 h-2.5 lg:w-3.5 lg:h-3.5 bg-[#2196F3] rounded-full" />
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Feature Text */}
+                    <div className={`transition-all duration-500 ${isActive ? 'opacity-100 scale-100 translate-x-0' : 'opacity-40 scale-95 -translate-x-2'}`}>
+                      <div className="flex items-center gap-3 mb-1 lg:mb-2">
+                        <div className={`p-2 rounded-lg transition-colors duration-500 ${isActive ? 'bg-[#E3F2FD] text-[#2196F3]' : 'bg-slate-100 text-slate-500'}`}>
+                          <feat.icon className="w-4 h-4 lg:w-5 lg:h-5" />
+                        </div>
+                        <h3 className="text-xl lg:text-2xl font-black text-slate-900">{feat.title}</h3>
+                      </div>
+                      
+                      <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isActive ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'}`}>
+                        <p className="text-slate-600 font-medium text-sm lg:text-base pr-4 lg:pr-12 pt-1 lg:pt-2 leading-relaxed">
+                          {feat.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+
+          {/* RIGHT COLUMN: INTERACTIVE DEMOS */}
+          <div className="w-full lg:w-1/2 h-[350px] lg:h-full max-h-[600px] flex justify-center items-center py-4">
+             <div className="relative w-full h-full min-h-[350px] bg-white border border-[#D0E2F5] rounded-[2rem] shadow-[0_40px_80px_rgba(33,150,243,0.08)] overflow-hidden flex flex-col">
+                
+                {/* Decorative Window Controls */}
+                <div className="bg-slate-50/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex items-center gap-2 z-20">
+                  <div className="w-3 h-3 rounded-full bg-rose-400" />
+                  <div className="w-3 h-3 rounded-full bg-amber-400" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                  <div className="ml-4 px-3 py-1 bg-white rounded-md text-[10px] font-bold text-slate-400 font-mono border border-slate-100">
+                    preproute.com/app/feature-{activeIndex + 1}
+                  </div>
+                </div>
+
+                {/* Demo Canvas */}
+                <div className="flex-1 relative bg-slate-50/30 overflow-hidden">
+                  
+                  {/* Internal Ambient Glows */}
+                  <motion.div 
+                     animate={{ rotate: 360 }} 
+                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                     className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-[#E3F2FD] to-[#BBDEFB] rounded-full blur-[80px] opacity-70" 
                   />
-                ))}
-              </div>
 
-              <button
-                onClick={() => setStep((prev) => Math.min(prev + 1, 4))}
-                disabled={step === 4}
-                className="p-1.5 rounded-full text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* STACKED DECK CONTAINER */}
-        <div className="relative w-full max-w-3xl mx-auto h-[460px] flex items-center justify-center my-4">
-          
-          {/* CARD 1 (Top Front Stack Card - zIndex: 50 - Solid #FFFFFF - Swipes RIGHT) */}
-          <motion.div 
-            style={{ zIndex: 50 }}
-            animate={{ 
-              x: step >= 1 ? 950 : 0, 
-              rotate: step >= 1 ? 25 : 0, 
-              opacity: step >= 1 ? 0 : 1 
-            }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-0 bg-white border-2 border-[#D0E2F5] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(13,71,161,0.12)] flex flex-col justify-between text-left"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-black uppercase text-[#2196F3] bg-[#E3F2FD] px-3 py-1 rounded-full">
-                  Feature 1 of 5
-                </span>
-                <span className="text-xs font-extrabold text-slate-400">Card #01</span>
-              </div>
-              <h3 className="text-2xl font-black text-slate-950 mb-2">Topic-Wise Practice Tests</h3>
-              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-4">
-                Target weak areas with 500+ granular topic drills across QA, LRDI, and Verbal Ability with adaptive difficulty benchmarks.
-              </p>
-              
-              <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-4 space-y-2.5 text-xs">
-                <div className="flex items-center justify-between">
-                  <span className="font-extrabold text-[#2196F3] bg-[#E3F2FD] px-2 py-0.5 rounded text-[10px]">
-                    QA • Higher Algebra
-                  </span>
-                  <span className="font-bold text-slate-500 text-[10px]">45 Questions Solved</span>
-                </div>
-                <p className="font-bold text-slate-800 text-xs">
-                  Q: Find integral values of x satisfying <code className="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono">x² - 7x + 12 &lt; 0</code>?
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {[
-                    { id: 0, text: '(A) 1 Solution' },
-                    { id: 1, text: '(B) 2 Solutions (x=3,4)' },
-                    { id: 2, text: '(C) 3 Solutions' },
-                    { id: 3, text: '(D) Infinite' },
-                  ].map((opt) => (
-                    <button
-                      key={opt.id}
-                      onClick={() => setSelectedOption(opt.id)}
-                      className={`p-2 rounded-xl text-left font-bold border transition-all text-[11px] ${
-                        selectedOption === opt.id 
-                          ? 'bg-emerald-50 border-emerald-400 text-emerald-950 shadow-2xs scale-[1.01]' 
-                          : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                      }`}
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeIndex}
+                      initial={{ opacity: 0, y: 30, scale: 0.95, filter: "blur(4px)" }}
+                      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: -30, scale: 0.95, filter: "blur(4px)" }}
+                      transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                      className="absolute inset-0 flex items-center justify-center p-6 lg:p-12"
                     >
-                      <span className="flex items-center justify-between">
-                        <span>{opt.text}</span>
-                        {selectedOption === opt.id && <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-xs font-black text-[#2196F3] pt-3 border-t border-slate-100">
-              <span>Scroll down on mouse wheel to swipe top card ➔</span>
-              <button 
-                onClick={() => setStep(1)}
-                className="inline-flex items-center gap-1 bg-[#E3F2FD] hover:bg-[#BBDEFB] px-3 py-1 rounded-full transition-colors"
-              >
-                <span>Swipe Next</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </motion.div>
-
-          {/* CARD 2 (Stack Card 2 - zIndex: 40 - Solid #FFFFFF - Swipes LEFT) */}
-          <motion.div 
-            style={{ zIndex: 40 }}
-            animate={{ 
-              x: step >= 2 ? -950 : 0, 
-              rotate: step >= 2 ? -25 : 0, 
-              opacity: step >= 2 ? 0 : 1 
-            }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-0 bg-white border-2 border-[#D0E2F5] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(13,71,161,0.12)] flex flex-col justify-between text-left"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-black uppercase text-[#2196F3] bg-[#E3F2FD] px-3 py-1 rounded-full">
-                  Feature 2 of 5
-                </span>
-                <span className="text-xs font-extrabold text-slate-400">Card #02</span>
-              </div>
-              <h3 className="text-2xl font-black text-slate-950 mb-2">Deep Performance Analytics</h3>
-              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-4">
-                Track your weekly score accuracy trajectory, progress velocity, and projected IPMAT rank in real-time.
-              </p>
-
-              <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 block">Projected IPMAT Score</span>
-                    <span className="text-xl font-black text-slate-950">265 <span className="text-xs text-slate-400 font-normal">/ 360</span></span>
-                  </div>
-                  <span className="bg-emerald-100 text-emerald-800 text-[11px] font-black px-2.5 py-0.5 rounded-lg">
-                    +14% Velocity
-                  </span>
-                </div>
-                <div className="h-20 w-full relative flex items-end">
-                  <svg className="w-full h-full overflow-visible" viewBox="0 0 300 60">
-                    <path d="M 0 50 Q 75 40, 150 25 T 300 8" fill="none" stroke="#2196F3" strokeWidth="3" />
-                    <circle cx="300" cy="8" r="5" fill="#0D47A1" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-xs font-black text-[#2196F3] pt-3 border-t border-slate-100">
-              <span>Scroll down on mouse wheel to swipe top card ➔</span>
-              <button 
-                onClick={() => setStep(2)}
-                className="inline-flex items-center gap-1 bg-[#E3F2FD] hover:bg-[#BBDEFB] px-3 py-1 rounded-full transition-colors"
-              >
-                <span>Swipe Next</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </motion.div>
-
-          {/* CARD 3 (Stack Card 3 - zIndex: 30 - Solid #FFFFFF - Swipes RIGHT) */}
-          <motion.div 
-            style={{ zIndex: 30 }}
-            animate={{ 
-              x: step >= 3 ? 950 : 0, 
-              rotate: step >= 3 ? 25 : 0, 
-              opacity: step >= 3 ? 0 : 1 
-            }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-0 bg-white border-2 border-[#D0E2F5] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(13,71,161,0.12)] flex flex-col justify-between text-left"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-black uppercase text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
-                  Feature 3 of 5
-                </span>
-                <span className="text-xs font-extrabold text-slate-400">Card #03</span>
-              </div>
-              <h3 className="text-2xl font-black text-slate-950 mb-2">Mistake Bank Vault</h3>
-              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-4">
-                Revisit every incorrect answer automatically logged with AI-guided step-by-step resolution.
-              </p>
-
-              <motion.div
-                onClick={() => setIsVaultFlipped(!isVaultFlipped)}
-                className="w-full bg-rose-50 border-2 border-rose-300 rounded-2xl p-4 shadow-2xs cursor-pointer hover:border-rose-400 transition-all text-left relative my-auto"
-                animate={{ rotateY: isVaultFlipped ? 180 : 0 }}
-                transition={{ duration: 0.5 }}
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                {!isVaultFlipped ? (
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-black uppercase bg-rose-200 text-rose-800 px-2 py-0.5 rounded-md">
-                        14 Unresolved Mistakes
-                      </span>
-                      <span className="text-[10px] font-extrabold text-rose-600 flex items-center gap-1">
-                        <RotateCw className="w-3 h-3" /> Flip Solution
-                      </span>
-                    </div>
-                    <h4 className="text-xs font-black text-rose-950 mb-1">
-                      QA Log: Speed & Time Mistake #14
-                    </h4>
-                    <p className="text-[11px] text-rose-900 font-medium leading-relaxed">
-                      "Train 200m platform in 20s. Forgot to add train length L."
-                    </p>
-                    <div className="mt-2 text-[10px] font-black text-rose-700 underline">
-                      Tap to see AI Guided Correction ➔
-                    </div>
-                  </div>
-                ) : (
-                  <div style={{ transform: 'rotateY(180deg)' }}>
-                    <span className="text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md block mb-1 w-fit">
-                      ✓ AI Resolution
-                    </span>
-                    <p className="text-[11px] text-slate-800 font-bold leading-relaxed">
-                      Distance = (L + 200m) = Speed × Time
-                    </p>
-                    <p className="text-[10px] text-slate-600 mt-1">
-                      <code>L + 200 = 20 × 20 = 400m</code> ➔ <strong>L = 200m</strong>.
-                    </p>
-                    <div className="mt-1.5 text-[10px] font-black text-rose-700 underline">
-                      Tap to flip back ➔
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            </div>
-
-            <div className="flex items-center justify-between text-xs font-black text-rose-600 pt-3 border-t border-slate-100">
-              <span>Scroll down on mouse wheel to swipe top card ➔</span>
-              <button 
-                onClick={() => setStep(3)}
-                className="inline-flex items-center gap-1 bg-rose-100 hover:bg-rose-200 px-3 py-1 rounded-full transition-colors"
-              >
-                <span>Swipe Next</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </motion.div>
-
-          {/* CARD 4 (Stack Card 4 - zIndex: 20 - Solid #FFFFFF - Swipes LEFT) */}
-          <motion.div 
-            style={{ zIndex: 20 }}
-            animate={{ 
-              x: step >= 4 ? -950 : 0, 
-              rotate: step >= 4 ? -25 : 0, 
-              opacity: step >= 4 ? 0 : 1 
-            }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-0 bg-white border-2 border-[#D0E2F5] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(13,71,161,0.12)] flex flex-col justify-between text-left"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-black uppercase text-[#2196F3] bg-[#E3F2FD] px-3 py-1 rounded-full">
-                  Feature 4 of 5
-                </span>
-                <span className="text-xs font-extrabold text-slate-400">Card #04</span>
-              </div>
-              <h3 className="text-2xl font-black text-slate-950 mb-2">Real Exam-Level Full Length Mocks</h3>
-              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-4">
-                Experience exact NTA and IIM test interface, sectional timers, bookmarking, and nationwide percentile benchmarks.
-              </p>
-
-              <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-4 text-xs space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-black text-slate-900">IPMAT Indore Mock #08</span>
-                  <span className="font-mono font-bold text-[#2196F3] bg-white px-2 py-0.5 rounded border border-slate-200">01:45:20</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <div className="bg-white p-2 rounded-xl border border-slate-200">
-                    <span className="text-[10px] text-slate-400 block font-bold">Exam Pattern</span>
-                    <span className="text-xs font-black text-slate-900">100% Latest NTA</span>
-                  </div>
-                  <div className="bg-white p-2 rounded-xl border border-slate-200">
-                    <span className="text-[10px] text-slate-400 block font-bold">Full Mocks</span>
-                    <span className="text-xs font-black text-[#2196F3]">25 Mocks Ready</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-xs font-black text-[#2196F3] pt-3 border-t border-slate-100">
-              <span>Scroll down on mouse wheel to swipe top card ➔</span>
-              <button 
-                onClick={() => setStep(4)}
-                className="inline-flex items-center gap-1 bg-[#E3F2FD] hover:bg-[#BBDEFB] px-3 py-1 rounded-full transition-colors"
-              >
-                <span>Swipe Next</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </motion.div>
-
-          {/* CARD 5 (Base Card 5 - zIndex: 10 - Solid #FFFFFF - Base Revealed) */}
-          <div 
-            style={{ zIndex: 10 }}
-            className="absolute inset-0 bg-white border-2 border-[#D0E2F5] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(13,71,161,0.12)] flex flex-col justify-between text-left"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-black uppercase text-teal-700 bg-teal-100 px-3 py-1 rounded-full">
-                  Feature 5 of 5
-                </span>
-                <span className="text-xs font-extrabold text-slate-400">Card #05</span>
-              </div>
-              <h3 className="text-2xl font-black text-slate-950 mb-2">Flashcards & Smart Revision Decks</h3>
-              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-4">
-                Rapidly revise essential Quant formulas, Vocabulary flashcards, and shortcuts before exam day.
-              </p>
-
-              <div className="bg-teal-50 border border-teal-200 rounded-2xl p-4 text-xs space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black uppercase bg-teal-200 text-teal-900 px-2 py-0.5 rounded">
-                    {sampleFlashcards[flashcardIndex].category} • {flashcardIndex + 1}/{sampleFlashcards.length}
-                  </span>
-                  <span className="text-[10px] font-bold text-teal-700">320 Formula Cards</span>
+                      {renderDemo(activeIndex)}
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
 
-                <div 
-                  onClick={() => setIsFlashcardFlipped(!isFlashcardFlipped)}
-                  className="bg-white border border-teal-200 rounded-xl p-3 my-2 cursor-pointer shadow-2xs hover:border-teal-400 transition-all min-h-[80px] flex flex-col justify-center"
-                >
-                  {!isFlashcardFlipped ? (
-                    <div>
-                      <span className="text-[9px] font-black uppercase text-teal-600 block mb-0.5">Question (Tap to flip)</span>
-                      <p className="text-xs font-black text-slate-900 leading-snug">
-                        {sampleFlashcards[flashcardIndex].question}
-                      </p>
-                    </div>
-                  ) : (
-                    <div>
-                      <span className="text-[9px] font-black uppercase text-emerald-600 block mb-0.5">✓ Answer Formula</span>
-                      <p className="text-xs font-black text-slate-900 leading-snug">
-                        {sampleFlashcards[flashcardIndex].answer}
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between text-xs pt-1">
-                  <button
-                    onClick={() => {
-                      setIsFlashcardFlipped(false);
-                      setFlashcardIndex((prev) => (prev > 0 ? prev - 1 : sampleFlashcards.length - 1));
-                    }}
-                    className="flex items-center gap-0.5 font-bold text-teal-800 hover:text-teal-950 text-[11px]"
-                  >
-                    <ChevronLeft className="w-3.5 h-3.5" /> Prev
-                  </button>
-                  <span className="text-[9px] font-bold text-teal-700">Tap card to flip</span>
-                  <button
-                    onClick={() => {
-                      setIsFlashcardFlipped(false);
-                      setFlashcardIndex((prev) => (prev < sampleFlashcards.length - 1 ? prev + 1 : 0));
-                    }}
-                    className="flex items-center gap-0.5 font-bold text-teal-800 hover:text-teal-950 text-[11px]"
-                  >
-                    Next <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-xs font-black text-teal-700 pt-3 border-t border-slate-100">
-              <span>All cards swiped! Scroll down to continue to Pricing ➔</span>
-              <ArrowRight className="w-4 h-4 text-teal-700" />
-            </div>
+             </div>
           </div>
 
         </div>
-
       </div>
     </section>
   );
 }
-
-
-
-
-
-
-
-
-
-
