@@ -249,7 +249,7 @@ export default function FeaturesSection() {
                 return (
                   <div key={feat.id} className="relative pl-[60px] lg:pl-[80px] py-2 lg:py-4">
                     {/* Node / Node Icon */}
-                    <div className="absolute left-[24px] lg:left-[36px] top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-[#F7F7F7] py-2">
+                    <div className="absolute left-[24px] lg:left-[36px] top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
                       <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
                         isCompleted ? 'bg-[#2196F3]' :
                         isActive ? 'bg-white border-[3px] border-[#2196F3] shadow-[0_0_20px_rgba(33,150,243,0.5)]' :

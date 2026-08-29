@@ -1,123 +1,238 @@
-import React from 'react';
-import { CheckCircle2, XCircle, Sparkles, UserCheck } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  CheckCircle2, 
+  MinusCircle, 
+  Sparkles, 
+  ShieldCheck, 
+  Zap, 
+  Star,
+  Check
+} from 'lucide-react';
 
 export default function PricingSection() {
   return (
-    <section id="pricing" className="py-24 bg-transparent px-6 sm:px-12 md:px-24 relative">
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section id="pricing" className="py-24 sm:py-32 bg-transparent px-6 sm:px-12 md:px-16 relative overflow-hidden">
+      
+      {/* Ambient Blue Background Glows */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#2196F3]/8 rounded-full blur-[140px] pointer-events-none z-0" />
+      <div className="absolute bottom-10 left-10 w-[450px] h-[450px] bg-[#90CAF9]/15 rounded-full blur-[120px] pointer-events-none z-0" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-950 tracking-tight mb-4">
+        <div className="text-center mb-14 sm:mb-18 max-w-3xl mx-auto">
+          <motion.h2 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight mb-4"
+          >
             Simple, Transparent <span className="text-[#2196F3]">Pricing</span>
-          </h2>
-          <p className="text-slate-600 text-base sm:text-lg font-medium">
+          </motion.h2>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed max-w-2xl mx-auto"
+          >
             Start for free and upgrade when you are ready to crack IPMAT with IIM student guidance.
-          </p>
+          </motion.p>
         </div>
 
-        {/* Pricing Cards Grid */}
-        <div className="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto justify-center items-stretch">
+        {/* 2-Card Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
           
-          {/* Basic Free Plan */}
-          <div className="flex-1 bg-white border border-[#D0E2F5] rounded-3xl p-8 shadow-[0_10px_30px_rgba(13,71,161,0.05)] flex flex-col relative hover:border-[#90CAF9] transition-all">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xl font-extrabold text-slate-900">Basic Aspirant</h3>
-              <span className="bg-slate-100 text-slate-600 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md">Free</span>
-            </div>
-            
-            <div className="flex items-baseline gap-2 mb-4">
-              <span className="text-5xl font-black text-slate-950">₹0</span>
-              <span className="text-slate-500 font-bold text-sm">/ forever</span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-500 mb-8 font-medium leading-relaxed">Perfect for exploring the platform and testing out baseline mocks.</p>
-            
-            <div className="space-y-4 mb-8 flex-1 border-t border-slate-100 pt-6">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#2196F3] shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-bold text-slate-800">1 Free Full-Length Indore Mock</span>
+          {/* 1. FREE CARD */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="bg-white border border-[#D0E2F5] rounded-[2rem] p-8 sm:p-10 shadow-[0_10px_30px_rgba(13,71,161,0.04)] flex flex-col justify-between hover:border-[#90CAF9] hover:shadow-[0_20px_40px_rgba(33,150,243,0.08)] transition-all duration-300 relative"
+          >
+            <div>
+              {/* Header */}
+              <div className="text-center mb-2">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                  Free
+                </span>
+                <div className="text-4xl sm:text-5xl font-black text-slate-950 mt-1 mb-6">
+                  ₹0
+                </div>
               </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#2196F3] shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-bold text-slate-800">Daily Topic Drills (10/day)</span>
+
+              {/* Mocks Highlight Box */}
+              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-xs font-semibold text-slate-700 space-y-1.5 mb-6 text-left">
+                <div>1 Full-Length IPMAT Indore Mock</div>
+                <div>Baseline Diagnostic Performance Report</div>
               </div>
-              <div className="flex items-start gap-3">
-                <XCircle className="w-5 h-5 text-slate-300 shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-medium text-slate-400">Deep Performance Analytics</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <XCircle className="w-5 h-5 text-slate-300 shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-medium text-slate-400">Automated Mistake Bank Vault</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <XCircle className="w-5 h-5 text-slate-300 shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-medium text-slate-400">1:1 IIM Mentor Strategy Session</span>
+
+              {/* Feature Checklist */}
+              <div className="space-y-3.5 mb-6 text-left">
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-bold text-slate-900">Daily Practice (10/day)</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-bold text-slate-900">Basic Formula & Vocab Flashcards</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <MinusCircle className="w-5 h-5 text-slate-300 shrink-0" />
+                  <span className="text-sm font-semibold text-slate-400">Pyp (Previous Year Papers)</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <MinusCircle className="w-5 h-5 text-slate-300 shrink-0" />
+                  <span className="text-sm font-semibold text-slate-400">Sectional</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <MinusCircle className="w-5 h-5 text-slate-300 shrink-0" />
+                  <span className="text-sm font-semibold text-slate-400">Topicwise</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <MinusCircle className="w-5 h-5 text-slate-300 shrink-0" />
+                  <span className="text-sm font-semibold text-slate-400">Community</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <MinusCircle className="w-5 h-5 text-slate-300 shrink-0" />
+                  <span className="text-sm font-semibold text-slate-400">Interview Prep</span>
+                </div>
               </div>
             </div>
 
-            <button 
-              onClick={() => alert('Starting free basic access...')}
-              className="w-full py-4 px-6 rounded-2xl font-black text-[#2196F3] bg-[#E3F2FD] hover:bg-[#D0E2F5] transition-all text-xs sm:text-sm"
-            >
-              Start for Free
-            </button>
-          </div>
+            <div className="pt-4 border-t border-slate-100">
+              <button 
+                onClick={() => alert('Starting Free Basic Access...')}
+                className="w-full py-4 rounded-2xl font-black text-[#2196F3] bg-[#E3F2FD] hover:bg-[#D0E2F5] text-sm transition-all shadow-xs active:scale-98"
+              >
+                Get Started Free
+              </button>
+            </div>
+          </motion.div>
 
-          {/* Pro Plan */}
-          <div className="flex-1 bg-gradient-to-b from-white via-white to-[#F0F7FF] border-2 border-[#2196F3] rounded-3xl p-8 shadow-[0_20px_50px_rgba(33,150,243,0.15)] flex flex-col relative transform md:-translate-y-4 hover:shadow-[0_25px_60px_rgba(33,150,243,0.22)] transition-all">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <span className="bg-[#2196F3] text-white text-[11px] font-black uppercase tracking-wider py-1.5 px-5 rounded-full shadow-md flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>MOST POPULAR CHOICE</span>
+          {/* 2. PRO CARD (₹3,999) */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="bg-white border-2 border-[#2196F3] rounded-[2rem] p-8 sm:p-10 shadow-[0_20px_60px_rgba(33,150,243,0.18)] flex flex-col justify-between relative transform md:-translate-y-2 hover:shadow-[0_25px_70px_rgba(33,150,243,0.25)] transition-all duration-300"
+          >
+            {/* Top Pill Badge */}
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20">
+              <span className="bg-[#2196F3] text-white text-[11px] font-black uppercase tracking-wider py-1.5 px-6 rounded-full shadow-md flex items-center gap-1.5">
+                <span>MOST POPULAR</span>
               </span>
             </div>
-            
-            <div className="flex items-center justify-between mb-2 mt-2">
-              <h3 className="text-xl font-extrabold text-slate-950">Pro IPMAT 2026</h3>
-              <span className="bg-[#E3F2FD] text-[#2196F3] border border-[#90CAF9]/60 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md">All-Access</span>
+
+            <div>
+              {/* Header */}
+              <div className="text-center mt-2 mb-2">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                  PRO
+                </span>
+                <div className="text-4xl sm:text-5xl font-black text-slate-950 mt-1 mb-6">
+                  ₹3,999
+                </div>
+              </div>
+
+              {/* Mocks Highlight Box */}
+              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-xs font-semibold text-slate-700 space-y-1.5 mb-6 text-left">
+                <div>15 mocks each — IPMAT Indore, JIPMAT</div>
+                <div>5 mocks each — IIM B DBE, NPAT, SET</div>
+              </div>
+
+              {/* Feature Checklist */}
+              <div className="space-y-3.5 mb-6 text-left">
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-bold text-slate-900">Pyp</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-bold text-slate-900">Sectional</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-bold text-slate-900">Topicwise</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-bold text-slate-900">Daily Practice</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-bold text-slate-900">Community</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <MinusCircle className="w-5 h-5 text-slate-300 shrink-0" />
+                  <span className="text-sm font-semibold text-slate-400">Interview Prep</span>
+                </div>
+              </div>
             </div>
 
-            <div className="flex items-baseline gap-2 mb-4">
-              <span className="text-5xl font-black text-slate-950">₹4,000</span>
-              <span className="text-slate-500 font-bold text-sm">/ year</span>
+            {/* Bottom Button */}
+            <div className="pt-4 border-t border-slate-100">
+              <button 
+                onClick={() => alert('Proceeding to Pro All-Access Checkout...')}
+                className="w-full py-4 rounded-2xl font-black text-white bg-[#2196F3] hover:bg-[#1976D2] text-sm transition-all shadow-md hover:shadow-lg active:scale-98"
+              >
+                Get Started
+              </button>
             </div>
-            <p className="text-xs sm:text-sm text-slate-600 mb-8 font-medium leading-relaxed">Everything you need to crack IPMAT Indore, Rohtak, JIPMAT & secure your IIM seat.</p>
-            
-            <div className="space-y-4 mb-8 flex-1 border-t border-slate-100 pt-6">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#2196F3] shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-bold text-slate-800">25+ Latest NTA/IIM Full Mocks</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#2196F3] shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-bold text-slate-800">500+ Adaptive Topic Practice Drills</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#2196F3] shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-bold text-slate-800">AI Deep Performance & Percentile Analytics</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[#2196F3] shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-bold text-slate-800">Automated Rose Pink Mistake Bank Vault</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <UserCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm font-black text-emerald-700">1:1 Strategy Calls with IIM Students</span>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => alert('Proceeding to Pro IPMAT access...')}
-              className="w-full py-4 px-6 rounded-2xl font-black text-white bg-[#2196F3] hover:bg-[#1976D2] transition-all shadow-lg hover:shadow-xl hover:scale-102 text-xs sm:text-sm"
-            >
-              Get Pro All-Access Pass
-            </button>
-          </div>
+          </motion.div>
 
         </div>
+
+        {/* Trust Badges */}
+        <div className="mt-14 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-bold text-slate-500">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-500" />
+            <span>7-Day Money-Back Guarantee</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Zap className="w-4 h-4 text-[#2196F3]" />
+            <span>Instant Dashboard Access</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Star className="w-4 h-4 text-amber-500" />
+            <span>IIM Student Curated</span>
+          </div>
+        </div>
+
       </div>
     </section>
   );
 }
+
+
 
 

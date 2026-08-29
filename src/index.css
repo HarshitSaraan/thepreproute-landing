@@ -36,7 +36,37 @@
   background-color: #F7F7F7;
 }
 
-/* Hide scrollbar while keeping scroll functionality */
+/* Custom Sleek Gamified Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #90CAF9 0%, #2196F3 100%);
+  border-radius: 9999px;
+  border: 2px solid #F1F5F9;
+  box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+  transition: all 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2196F3 0%, #0D47A1 100%);
+  box-shadow: 0 0 14px rgba(33, 150, 243, 0.7);
+}
+
+/* Firefox standard scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #90CAF9 #F1F5F9;
+}
+
+/* Hide scrollbar utility while keeping scroll functionality */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -44,3 +74,4 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+

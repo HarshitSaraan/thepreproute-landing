@@ -30,7 +30,7 @@ export default function HeroSection() {
   }, [typedText, isDeleting]);
 
   return (
-    <section className="min-h-[90vh] flex flex-col justify-center items-center text-center bg-transparent px-6 sm:px-12 md:px-24 pt-24 sm:pt-28 lg:pt-32 pb-20 relative">
+    <section id="hero" className="min-h-[90vh] flex flex-col justify-center items-center text-center bg-transparent px-6 sm:px-12 md:px-24 pt-24 sm:pt-28 lg:pt-32 pb-20 relative">
       
       {/* Google Antigravity-Style Particle Vortex Background */}
       <AntigravityBackground />

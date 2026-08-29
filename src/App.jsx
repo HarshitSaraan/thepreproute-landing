@@ -7,10 +7,13 @@ import FeaturesSection from './components/FeaturesSection';
 import PricingSection from './components/PricingSection';
 import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
+import GamifiedScrollBar from './components/GamifiedScrollBar';
 
 function App() {
   return (
     <div className="font-sans text-slate-900 bg-[#F7F7F7] selection:bg-[#90CAF9] selection:text-[#2196F3] min-h-screen relative overflow-clip">
+      {/* Gamified Route Progress & Interactive Scroll HUD */}
+      <GamifiedScrollBar />
       
       {/* GLOBAL LIGHT BLUEISH AMBIENT GLOW CANVASES SPANNING ALL OVER THE WEBSITE */}
       
