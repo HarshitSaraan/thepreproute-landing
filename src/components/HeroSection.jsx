@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, ShieldCheck, UserCheck, Star, ArrowRight, CheckCircle, Video, Award } from 'lucide-react';
 import AntigravityBackground from './AntigravityBackground';
 
-export default function HeroSection() {
+export default function HeroSection({ onOpenMentorModal }) {
   const [typedText, setTypedText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const fullText = "Route.";
@@ -59,8 +59,10 @@ export default function HeroSection() {
         {/* Primary CTA & Subtext */}
         <div className="flex flex-col items-center gap-3.5">
           <button 
-            onClick={() => alert('Booking free 1:1 mentor strategy call with IIM Student...')}
-            className="group relative bg-[#2196F3] hover:bg-[#1976D2] text-white font-black py-4 px-10 rounded-full text-base sm:text-lg transition-all shadow-[0_10px_25px_-5px_rgba(33,150,243,0.4)] hover:shadow-[0_15px_30px_-5px_rgba(33,150,243,0.5)] hover:scale-105 active:scale-98 flex items-center gap-3"
+            onClick={() => {
+              if (onOpenMentorModal) onOpenMentorModal();
+            }}
+            className="group relative bg-[#2196F3] hover:bg-[#1976D2] text-white font-black py-4 px-10 rounded-full text-base sm:text-lg transition-all shadow-[0_10px_25px_-5px_rgba(33,150,243,0.4)] hover:shadow-[0_15px_30px_-5px_rgba(33,150,243,0.5)] hover:scale-105 active:scale-98 flex items-center gap-3 cursor-pointer"
           >
             <UserCheck className="w-5 h-5 stroke-[2.5]" />
             <span>Talk to an IIM Mentor</span>

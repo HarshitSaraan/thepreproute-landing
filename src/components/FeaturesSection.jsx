@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValueEvent, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { Target, BarChart2, Repeat, LayoutTemplate, BrainCircuit, CheckCircle2 } from 'lucide-react';
 
 const features = [
@@ -46,7 +46,7 @@ function DemoTests() {
             key={i}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.15, duration: 0.4 }}
+            transition={{ delay: i * 0.1, duration: 0.3 }}
             className={`h-16 rounded-xl border-2 flex items-center justify-center ${i===2 ? 'border-[#2196F3] bg-[#E3F2FD] shadow-[0_0_20px_rgba(33,150,243,0.3)]' : 'border-slate-100 bg-white'}`}
           >
             {i===2 && <CheckCircle2 className="text-[#2196F3] w-6 h-6" />}
@@ -65,14 +65,14 @@ function DemoAnalytics() {
           key={i}
           initial={{ height: 0 }}
           animate={{ height: `${h}%` }}
-          transition={{ delay: i * 0.1, duration: 0.6, type: 'spring' }}
+          transition={{ delay: i * 0.08, duration: 0.5, type: 'spring' }}
           className={`w-12 rounded-t-lg relative ${i===3 ? 'bg-[#2196F3]' : 'bg-[#E3F2FD]'}`}
         >
           {i===3 && (
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: -20 }}
-              transition={{ delay: 0.8 }}
+              transition={{ delay: 0.5 }}
               className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#0D47A1] text-white text-[10px] font-bold px-2 py-1 rounded"
             >
               +14%
@@ -115,7 +115,7 @@ function DemoMocks() {
           <motion.div 
              initial={{ width: '100%' }}
              animate={{ width: '20%' }}
-             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+             transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
              className="h-full bg-[#2196F3]"
           />
         </div>
@@ -124,9 +124,8 @@ function DemoMocks() {
         <div className="w-3/4 h-3 bg-slate-200 rounded" />
         <div className="pt-2 space-y-2">
           {[1,2,3].map(i => (
-             <motion.div 
+             <div 
                 key={i}
-                whileHover={{ scale: 1.02, borderColor: '#2196F3' }}
                 className="w-full h-10 border border-slate-100 bg-slate-50 rounded-lg cursor-pointer transition-colors"
              />
           ))}
@@ -143,9 +142,9 @@ function DemoDecks() {
          <motion.div
            key={i}
            animate={i === 0 ? {
-             y: [0, -40, 0],
-             x: [0, 100, 0],
-             rotate: [0, 10, 0],
+             y: [0, -35, 0],
+             x: [0, 80, 0],
+             rotate: [0, 8, 0],
              opacity: [1, 0, 1],
              zIndex: [3, 1, 3]
            } : {
@@ -172,17 +171,15 @@ export default function FeaturesSection() {
     offset: ["start start", "end end"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });
-  
-  // Progress maps to steps 0, 1, 2, 3, 4
-  const stepValue = useTransform(smoothProgress, [0, 1], [0, features.length - 1]);
-  // Line fill maps to percentage
-  const lineFill = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
+  // Direct responsive interpolation without spring overshoot
+  const lineFill = useTransform(scrollYProgress, [0, 0.9], ['0%', '100%']);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  useMotionValueEvent(stepValue, "change", (latest) => {
-    setActiveIndex(Math.round(latest));
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const rawStep = latest * (features.length - 0.2);
+    const index = Math.min(features.length - 1, Math.max(0, Math.floor(rawStep)));
+    setActiveIndex(index);
   });
 
   const renderDemo = (index) => {
@@ -192,7 +189,7 @@ export default function FeaturesSection() {
       case 2: return <DemoVault />;
       case 3: return <DemoMocks />;
       case 4: return <DemoDecks />;
-      default: return null;
+      default: return <DemoTests />;
     }
   };
 
@@ -200,45 +197,44 @@ export default function FeaturesSection() {
     <section 
       id="features" 
       ref={containerRef} 
-      // 500vh ensures a smooth scroll journey across 5 features
-      className="relative h-[500vh] bg-transparent text-slate-900"
+      className="relative h-[250vh] bg-transparent text-slate-900"
     >
-      <div className="sticky top-0 h-screen w-full flex flex-col pt-16 sm:pt-24">
+      <div className="sticky top-0 h-screen w-full flex flex-col pt-16 sm:pt-20 justify-center">
         
         {/* Ambient Glows */}
         <div className="absolute top-[20%] left-[60%] w-[600px] h-[600px] bg-[#2196F3]/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-[#64B5F6]/10 rounded-full blur-[100px] pointer-events-none" />
 
         {/* Centered Massive Title */}
-        <div className="w-full text-center relative z-20 mb-8 lg:mb-12 shrink-0 px-6">
+        <div className="w-full text-center relative z-20 mb-6 lg:mb-10 shrink-0 px-6">
            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tighter uppercase">
              Why Us?
            </h2>
         </div>
 
-        <div className="max-w-[1440px] w-full mx-auto px-6 sm:px-12 md:px-16 relative z-10 flex flex-col lg:flex-row gap-12 lg:gap-24 items-center flex-1 min-h-0 pb-12">
+        <div className="max-w-[1440px] w-full mx-auto px-6 sm:px-12 md:px-16 relative z-10 flex flex-col lg:flex-row gap-12 lg:gap-24 items-center flex-1 min-h-0 pb-8">
           
           {/* LEFT COLUMN: PROGRESSION PATH */}
           <div className="w-full lg:w-1/2 flex flex-col h-full justify-center">
             
             {/* Header / Progress Indicator */}
-            <div className="mb-8 lg:mb-12 pl-4 lg:pl-16">
+            <div className="mb-6 lg:mb-8 pl-4 lg:pl-16">
               <span className="text-[10px] font-black tracking-widest uppercase text-[#2196F3] bg-[#E3F2FD] px-3 py-1 rounded-full">
                 Features Journey
               </span>
-              <div className="text-sm font-bold text-slate-400 mt-4 flex items-end gap-1">
+              <div className="text-sm font-bold text-slate-400 mt-3 flex items-end gap-1">
                 <span className="text-slate-950 text-4xl lg:text-5xl font-black leading-none">0{activeIndex + 1}</span> 
                 <span className="text-lg pb-1">/ 0{features.length}</span>
               </div>
             </div>
 
-              {/* Path Container */}
-            <div className="relative flex flex-col gap-6 lg:gap-10">
+            {/* Path Container */}
+            <div className="relative flex flex-col gap-4 lg:gap-6">
               {/* Background Line */}
-              <div className="absolute left-[24px] lg:left-[36px] top-[30px] bottom-[30px] w-0.5 bg-slate-200 -translate-x-1/2" />
+              <div className="absolute left-[24px] lg:left-[36px] top-[24px] bottom-[24px] w-0.5 bg-slate-200 -translate-x-1/2" />
               {/* Active Animated Fill Line */}
               <motion.div 
-                className="absolute left-[24px] lg:left-[36px] top-[30px] w-0.5 bg-[#2196F3] -translate-x-1/2" 
+                className="absolute left-[24px] lg:left-[36px] top-[24px] w-0.5 bg-[#2196F3] -translate-x-1/2" 
                 style={{ height: lineFill }}
               />
 
@@ -247,10 +243,14 @@ export default function FeaturesSection() {
                 const isActive = activeIndex === i;
                 
                 return (
-                  <div key={feat.id} className="relative pl-[60px] lg:pl-[80px] py-2 lg:py-4">
+                  <div 
+                    key={feat.id} 
+                    onClick={() => setActiveIndex(i)}
+                    className="relative pl-[60px] lg:pl-[80px] py-1.5 lg:py-2.5 cursor-pointer"
+                  >
                     {/* Node / Node Icon */}
-                    <div className="absolute left-[24px] lg:left-[36px] top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
-                      <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
+                    <div className="absolute left-[24px] lg:left-[36px] top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-[#F7F7F7] py-1">
+                      <div className={`w-8 h-8 lg:w-9 lg:h-9 rounded-full flex items-center justify-center transition-all duration-300 ${
                         isCompleted ? 'bg-[#2196F3]' :
                         isActive ? 'bg-white border-[3px] border-[#2196F3] shadow-[0_0_20px_rgba(33,150,243,0.5)]' :
                         'bg-white border-[2px] border-slate-300'
@@ -261,22 +261,22 @@ export default function FeaturesSection() {
                           </svg>
                         )}
                         {isActive && (
-                          <div className="w-2.5 h-2.5 lg:w-3.5 lg:h-3.5 bg-[#2196F3] rounded-full" />
+                          <div className="w-2.5 h-2.5 lg:w-3 lg:h-3 bg-[#2196F3] rounded-full" />
                         )}
                       </div>
                     </div>
 
                     {/* Feature Text */}
-                    <div className={`transition-all duration-500 ${isActive ? 'opacity-100 scale-100 translate-x-0' : 'opacity-40 scale-95 -translate-x-2'}`}>
-                      <div className="flex items-center gap-3 mb-1 lg:mb-2">
-                        <div className={`p-2 rounded-lg transition-colors duration-500 ${isActive ? 'bg-[#E3F2FD] text-[#2196F3]' : 'bg-slate-100 text-slate-500'}`}>
-                          <feat.icon className="w-4 h-4 lg:w-5 lg:h-5" />
+                    <div className={`transition-all duration-300 ${isActive ? 'opacity-100 scale-100 translate-x-0' : 'opacity-40 scale-95 -translate-x-1'}`}>
+                      <div className="flex items-center gap-3 mb-1">
+                        <div className={`p-1.5 rounded-lg transition-colors duration-300 ${isActive ? 'bg-[#E3F2FD] text-[#2196F3]' : 'bg-slate-100 text-slate-500'}`}>
+                          <feat.icon className="w-4 h-4 lg:w-4.5 lg:h-4.5" />
                         </div>
-                        <h3 className="text-xl lg:text-2xl font-black text-slate-900">{feat.title}</h3>
+                        <h3 className="text-lg lg:text-xl font-black text-slate-900">{feat.title}</h3>
                       </div>
                       
-                      <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isActive ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <p className="text-slate-600 font-medium text-sm lg:text-base pr-4 lg:pr-12 pt-1 lg:pt-2 leading-relaxed">
+                      <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isActive ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
+                        <p className="text-slate-600 font-medium text-xs lg:text-sm pr-4 lg:pr-12 pt-0.5 leading-relaxed">
                           {feat.desc}
                         </p>
                       </div>
@@ -289,11 +289,11 @@ export default function FeaturesSection() {
           </div>
 
           {/* RIGHT COLUMN: INTERACTIVE DEMOS */}
-          <div className="w-full lg:w-1/2 h-[350px] lg:h-full max-h-[600px] flex justify-center items-center py-4">
-             <div className="relative w-full h-full min-h-[350px] bg-white border border-[#D0E2F5] rounded-[2rem] shadow-[0_40px_80px_rgba(33,150,243,0.08)] overflow-hidden flex flex-col">
+          <div className="w-full lg:w-1/2 h-[340px] lg:h-[440px] flex justify-center items-center py-2">
+             <div className="relative w-full h-full bg-white border border-[#D0E2F5] rounded-[2rem] shadow-[0_30px_60px_rgba(33,150,243,0.08)] overflow-hidden flex flex-col">
                 
                 {/* Decorative Window Controls */}
-                <div className="bg-slate-50/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex items-center gap-2 z-20">
+                <div className="bg-slate-50/80 backdrop-blur-md border-b border-slate-100 px-5 py-3 flex items-center gap-2 z-20">
                   <div className="w-3 h-3 rounded-full bg-rose-400" />
                   <div className="w-3 h-3 rounded-full bg-amber-400" />
                   <div className="w-3 h-3 rounded-full bg-emerald-400" />
@@ -315,11 +315,11 @@ export default function FeaturesSection() {
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={activeIndex}
-                      initial={{ opacity: 0, y: 30, scale: 0.95, filter: "blur(4px)" }}
-                      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, y: -30, scale: 0.95, filter: "blur(4px)" }}
-                      transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                      className="absolute inset-0 flex items-center justify-center p-6 lg:p-12"
+                      initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -20, scale: 0.96 }}
+                      transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+                      className="absolute inset-0 flex items-center justify-center p-6 lg:p-10"
                     >
                       {renderDemo(activeIndex)}
                     </motion.div>

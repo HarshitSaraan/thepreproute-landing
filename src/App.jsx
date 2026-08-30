@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import OpeningPreloader from './components/OpeningPreloader';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -7,14 +7,21 @@ import FeaturesSection from './components/FeaturesSection';
 import PricingSection from './components/PricingSection';
 import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
-import GamifiedScrollBar from './components/GamifiedScrollBar';
+import MentorConsultationModal from './components/MentorConsultationModal';
+import AuthModal from './components/AuthModal';
 
 function App() {
+  const [isMentorModalOpen, setIsMentorModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState('login');
+
+  const handleOpenAuth = (mode = 'login') => {
+    setAuthMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
   return (
-    <div className="font-sans text-slate-900 bg-[#F7F7F7] selection:bg-[#90CAF9] selection:text-[#2196F3] min-h-screen relative overflow-clip">
-      {/* Gamified Route Progress & Interactive Scroll HUD */}
-      <GamifiedScrollBar />
-      
+    <div className="font-sans text-slate-900 bg-[#F7F7F7] selection:bg-[#90CAF9] selection:text-[#2196F3] min-h-screen relative">
       {/* GLOBAL LIGHT BLUEISH AMBIENT GLOW CANVASES SPANNING ALL OVER THE WEBSITE */}
       
       {/* Top Header Light Blue Spotlight Gradient */}
@@ -47,10 +54,13 @@ function App() {
         <OpeningPreloader />
 
         {/* 1. Navbar */}
-        <Navbar />
+        <Navbar 
+          onOpenMentorModal={() => setIsMentorModalOpen(true)}
+          onOpenAuthModal={handleOpenAuth}
+        />
 
         {/* 2. Hero Section ("Because every Dream deserves a Route" + IIM Mentor Option) */}
-        <HeroSection />
+        <HeroSection onOpenMentorModal={() => setIsMentorModalOpen(true)} />
 
         {/* 3. The PrepRoute Loop (4-Step Connected Preparation Path Showcase) */}
         <PrepRouteLoopSection />
@@ -59,19 +69,33 @@ function App() {
         <FeaturesSection />
 
         {/* 5. Pricing Section */}
-        <PricingSection />
+        <PricingSection onOpenAuthModal={handleOpenAuth} />
 
         {/* 6. Frequently Asked Questions Section */}
         <FAQSection />
 
         {/* 7. Cool Footer */}
-        <Footer />
+        <Footer onOpenMentorModal={() => setIsMentorModalOpen(true)} />
+
+        {/* Mentor Consultation Modal connected to Backend POST request/create */}
+        <MentorConsultationModal
+          isOpen={isMentorModalOpen}
+          onClose={() => setIsMentorModalOpen(false)}
+        />
+
+        {/* User Auth Modal (Login / Sign Up) connected to Backend Auth/userlogin & Auth/signUp */}
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          initialMode={authMode}
+          onClose={() => setIsAuthModalOpen(false)}
+        />
       </div>
     </div>
   );
 }
 
 export default App;
+
 
 
 

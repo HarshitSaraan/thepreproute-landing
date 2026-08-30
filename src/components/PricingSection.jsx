@@ -1,16 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  CheckCircle2, 
   MinusCircle, 
   Sparkles, 
   ShieldCheck, 
   Zap, 
   Star,
-  Check
+  Check,
+  Loader2
 } from 'lucide-react';
+import pricingService from '../api/services/pricingService';
 
-export default function PricingSection() {
+export default function PricingSection({ onOpenAuthModal }) {
+  const [plans, setPlans] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function loadPricing() {
+      try {
+        setLoading(true);
+        const res = await pricingService.getPlans({});
+        if (res.data?.data) {
+          setPlans(res.data.data);
+        } else if (Array.isArray(res.data)) {
+          setPlans(res.data);
+        }
+      } catch (err) {
+        console.warn('Could not fetch dynamic plans, using fallback pricing:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadPricing();
+  }, []);
+
+  const handlePlanClick = (planName) => {
+    const token = localStorage.getItem('token');
+    const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || 'http://localhost:5174';
+    if (token) {
+      window.location.href = `${dashboardUrl}#pricing`;
+    } else if (onOpenAuthModal) {
+      onOpenAuthModal('register');
+    } else {
+      window.location.href = dashboardUrl;
+    }
+  };
+
   return (
     <section id="pricing" className="py-24 sm:py-32 bg-transparent px-6 sm:px-12 md:px-16 relative overflow-hidden">
       
@@ -115,15 +151,15 @@ export default function PricingSection() {
 
             <div className="pt-4 border-t border-slate-100">
               <button 
-                onClick={() => alert('Starting Free Basic Access...')}
-                className="w-full py-4 rounded-2xl font-black text-[#2196F3] bg-[#E3F2FD] hover:bg-[#D0E2F5] text-sm transition-all shadow-xs active:scale-98"
+                onClick={() => handlePlanClick('Free')}
+                className="w-full py-4 rounded-2xl font-black text-[#2196F3] bg-[#E3F2FD] hover:bg-[#D0E2F5] text-sm transition-all shadow-xs active:scale-98 cursor-pointer"
               >
                 Get Started Free
               </button>
             </div>
           </motion.div>
 
-          {/* 2. PRO CARD (₹3,999) */}
+          {/* 2. PRO CARD */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -142,10 +178,10 @@ export default function PricingSection() {
               {/* Header */}
               <div className="text-center mt-2 mb-2">
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                  PRO
+                  PRO ALL-ACCESS
                 </span>
                 <div className="text-4xl sm:text-5xl font-black text-slate-950 mt-1 mb-6">
-                  ₹3,999
+                  {plans && plans[0]?.price ? `₹${plans[0].price}` : '₹3,999'}
                 </div>
               </div>
 
@@ -161,40 +197,42 @@ export default function PricingSection() {
                   <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
-                  <span className="text-sm font-bold text-slate-900">Pyp</span>
+                  <span className="text-sm font-bold text-slate-900">Pyp (Previous Year Papers)</span>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
-                  <span className="text-sm font-bold text-slate-900">Sectional</span>
+                  <span className="text-sm font-bold text-slate-900">Sectional Mocks</span>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
-                  <span className="text-sm font-bold text-slate-900">Topicwise</span>
+                  <span className="text-sm font-bold text-slate-900">Topicwise Practice</span>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
-                  <span className="text-sm font-bold text-slate-900">Daily Practice</span>
+                  <span className="text-sm font-bold text-slate-900">Unlimited Daily Practice</span>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
-                  <span className="text-sm font-bold text-slate-900">Community</span>
+                  <span className="text-sm font-bold text-slate-900">Study Squad & Community</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <MinusCircle className="w-5 h-5 text-slate-300 shrink-0" />
-                  <span className="text-sm font-semibold text-slate-400">Interview Prep</span>
+                  <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-bold text-slate-900">1:1 Mentorship Access</span>
                 </div>
               </div>
             </div>
@@ -202,8 +240,8 @@ export default function PricingSection() {
             {/* Bottom Button */}
             <div className="pt-4 border-t border-slate-100">
               <button 
-                onClick={() => alert('Proceeding to Pro All-Access Checkout...')}
-                className="w-full py-4 rounded-2xl font-black text-white bg-[#2196F3] hover:bg-[#1976D2] text-sm transition-all shadow-md hover:shadow-lg active:scale-98"
+                onClick={() => handlePlanClick('Pro')}
+                className="w-full py-4 rounded-2xl font-black text-white bg-[#2196F3] hover:bg-[#1976D2] text-sm transition-all shadow-md hover:shadow-lg active:scale-98 cursor-pointer"
               >
                 Get Started
               </button>
@@ -232,7 +270,3 @@ export default function PricingSection() {
     </section>
   );
 }
-
-
-
-

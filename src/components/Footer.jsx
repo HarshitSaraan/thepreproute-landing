@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserCheck, Sparkles, ArrowRight, ShieldCheck, Mail, MapPin } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ onOpenMentorModal }) {
   return (
     <footer className="w-full bg-transparent text-slate-800 pt-20 pb-12 relative">
       {/* Background glow accents */}
@@ -25,8 +25,10 @@ export default function Footer() {
           </div>
 
           <button 
-            onClick={() => alert('Booking free 1:1 strategy session with IIM Mentor...')}
-            className="shrink-0 bg-[#2196F3] hover:bg-[#1976D2] text-white font-black py-4 px-8 rounded-full text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-98 flex items-center gap-2.5"
+            onClick={() => {
+              if (onOpenMentorModal) onOpenMentorModal();
+            }}
+            className="shrink-0 bg-[#2196F3] hover:bg-[#1976D2] text-white font-black py-4 px-8 rounded-full text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-98 flex items-center gap-2.5 cursor-pointer"
           >
             <UserCheck className="w-4 h-4 stroke-[2.5]" />
             <span>Talk to an IIM Mentor</span>

@@ -24,7 +24,7 @@ function SketchLoopSVG() {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ onOpenMentorModal, onOpenAuthModal }) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -41,6 +41,9 @@ export default function Navbar() {
   }, []);
 
   const handleNavClick = (e, targetId) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     if (e && e.currentTarget) {
       e.currentTarget.blur();
     }
@@ -122,11 +125,26 @@ export default function Navbar() {
 
         </nav>
 
-        {/* Right CTA Action Button */}
-        <div className="flex items-center shrink-0">
+        {/* Right CTA Action Buttons */}
+        <div className="flex items-center gap-3 shrink-0">
           <button 
-            onClick={(e) => { e.currentTarget.blur(); alert('Opening Mentor Consultation Modal...'); }}
-            className={`flex items-center gap-2 bg-[#2196F3] hover:bg-[#1976D2] text-white font-extrabold rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-98 ${
+            onClick={() => {
+              if (onOpenAuthModal) onOpenAuthModal('login');
+              else window.location.href = import.meta.env.VITE_DASHBOARD_URL || 'http://localhost:5174';
+            }}
+            className={`hidden sm:inline-flex font-bold text-slate-700 hover:text-[#2196F3] transition-colors cursor-pointer ${
+              isScrolled ? 'text-xs px-2 py-1' : 'text-xs sm:text-sm px-3 py-1.5'
+            }`}
+          >
+            Sign In
+          </button>
+
+          <button 
+            onClick={(e) => {
+              e.currentTarget.blur();
+              if (onOpenMentorModal) onOpenMentorModal();
+            }}
+            className={`flex items-center gap-2 bg-[#2196F3] hover:bg-[#1976D2] text-white font-extrabold rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-98 cursor-pointer ${
               isScrolled ? 'text-xs px-4 py-2' : 'text-xs sm:text-sm px-6 py-3'
             }`}
           >
