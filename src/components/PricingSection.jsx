@@ -39,11 +39,11 @@ export default function PricingSection({ onOpenAuthModal }) {
     const token = localStorage.getItem('token');
     const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || 'http://localhost:5174';
     if (token) {
-      window.location.href = `${dashboardUrl}#pricing`;
+      window.location.href = `${dashboardUrl}/#token=${encodeURIComponent(token)}&redirect=pricing`;
     } else if (onOpenAuthModal) {
       onOpenAuthModal('register');
     } else {
-      window.location.href = dashboardUrl;
+      window.location.href = `${dashboardUrl}/#pricing`;
     }
   };
 

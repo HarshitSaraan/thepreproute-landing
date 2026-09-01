@@ -2,18 +2,22 @@ import Repository from "../Repository";
 import APIName from "../endPoints";
 
 export const authService = {
-  // Login with support for Admin and Student accounts
+  // Login with support for Student and Admin accounts
   async login(credentials) {
     const payload = {
       email: credentials.email ? credentials.email.trim() : "",
       password: credentials.password,
     };
     try {
-      // 1. Try AdminLogin first (matches old frontend admin auth)
-      return await Repository.post(APIName.AdminLogin, payload);
-    } catch (adminErr) {
-      // 2. Fallback to standard userLogin
+      // 1. Try standard userLogin first (primary for student accounts)
       return await Repository.post(APIName.userLogin, payload);
+    } catch (userErr) {
+      // 2. If userLogin fails, fallback to AdminLogin (for admin accounts)
+      try {
+        return await Repository.post(APIName.AdminLogin, payload);
+      } catch (adminErr) {
+        throw userErr;
+      }
     }
   },
 

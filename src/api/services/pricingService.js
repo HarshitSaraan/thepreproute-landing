@@ -4,7 +4,7 @@ import { PlnAndPricing, coupon } from "../endPoints";
 export const pricingService = {
   // Get all pricing plans
   getPlans(payload = {}) {
-    return Repository.post(PlnAndPricing.getPlanandPricingdashboard, payload);
+    return Repository.post(PlnAndPricing.get, payload);
   },
 
   // Verify coupon code

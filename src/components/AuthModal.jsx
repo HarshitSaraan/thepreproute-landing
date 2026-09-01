@@ -30,7 +30,9 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
       resData?.user?.token ||
       resData?.data?.token ||
       resData?.data?.user?.token ||
-      resData?.accessToken
+      resData?.accessToken ||
+      resData?.data?.accessToken ||
+      (typeof resData === 'string' && resData.length > 20 ? resData : null)
     );
   };
 
@@ -52,10 +54,9 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
         const token = extractToken(res.data);
         if (token) {
           localStorage.setItem('token', token);
-          window.location.href = dashboardUrl;
+          window.location.href = `${dashboardUrl}/#token=${encodeURIComponent(token)}`;
         } else {
-          setError('Login succeeded, redirecting...');
-          window.location.href = dashboardUrl;
+          window.location.href = `${dashboardUrl}/#dashboard`;
         }
       } else {
         // Registration
@@ -71,7 +72,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
         const token = extractToken(res.data);
         if (token) {
           localStorage.setItem('token', token);
-          window.location.href = dashboardUrl;
+          window.location.href = `${dashboardUrl}/#token=${encodeURIComponent(token)}`;
         } else {
           // Try automatic login immediately after registration
           try {
@@ -82,11 +83,10 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
             const autoToken = extractToken(loginRes.data);
             if (autoToken) {
               localStorage.setItem('token', autoToken);
-              window.location.href = dashboardUrl;
+              window.location.href = `${dashboardUrl}/#token=${encodeURIComponent(autoToken)}`;
               return;
             }
           } catch (autoLoginErr) {
-            // Auto login failed, switch to login tab
             console.log('Auto login after registration failed:', autoLoginErr);
           }
 

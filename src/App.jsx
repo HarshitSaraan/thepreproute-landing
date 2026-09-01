@@ -21,33 +21,34 @@ function App() {
   };
 
   return (
-    <div className="font-sans text-slate-900 bg-[#F7F7F7] selection:bg-[#90CAF9] selection:text-[#2196F3] min-h-screen relative">
+    <div className="font-sans text-slate-900 bg-[#F7F7F7] selection:bg-[#90CAF9] selection:text-[#2196F3] min-h-screen relative overflow-x-hidden w-full max-w-full">
       {/* GLOBAL LIGHT BLUEISH AMBIENT GLOW CANVASES SPANNING ALL OVER THE WEBSITE */}
-      
-      {/* Top Header Light Blue Spotlight Gradient */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-[800px] pointer-events-none z-0"
-        style={{
-          background: 'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(144, 202, 249, 0.45), rgba(227, 242, 253, 0.25) 45%, transparent 80%)'
-        }}
-      />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Top Header Light Blue Spotlight Gradient */}
+        <div 
+          className="absolute top-0 left-0 right-0 h-[800px] pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(144, 202, 249, 0.45), rgba(227, 242, 253, 0.25) 45%, transparent 80%)'
+          }}
+        />
 
-      {/* Mid Left Ambient Sky Blue Orb Glow */}
-      <div className="absolute top-[22%] -left-[200px] w-[800px] h-[800px] bg-[#90CAF9]/25 rounded-full blur-[140px] pointer-events-none z-0" />
+        {/* Mid Left Ambient Sky Blue Orb Glow */}
+        <div className="absolute top-[22%] -left-[200px] w-[800px] h-[800px] bg-[#90CAF9]/25 rounded-full blur-[140px] pointer-events-none" />
 
-      {/* Mid Right Ambient Electric Blue Orb Glow */}
-      <div className="absolute top-[48%] -right-[200px] w-[850px] h-[850px] bg-[#2196F3]/18 rounded-full blur-[150px] pointer-events-none z-0" />
+        {/* Mid Right Ambient Electric Blue Orb Glow */}
+        <div className="absolute top-[48%] -right-[200px] w-[850px] h-[850px] bg-[#2196F3]/18 rounded-full blur-[150px] pointer-events-none" />
 
-      {/* Lower Mid Ambient Pastel Blue Glow */}
-      <div className="absolute top-[72%] left-[10%] w-[900px] h-[900px] bg-[#64B5F6]/20 rounded-full blur-[160px] pointer-events-none z-0" />
+        {/* Lower Mid Ambient Pastel Blue Glow */}
+        <div className="absolute top-[72%] left-[10%] w-[900px] h-[900px] bg-[#64B5F6]/20 rounded-full blur-[160px] pointer-events-none" />
 
-      {/* Bottom Footer Light Blue Ambient Glow */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-[600px] pointer-events-none z-0"
-        style={{
-          background: 'radial-gradient(ellipse 90% 60% at 50% 110%, rgba(144, 202, 249, 0.35), transparent 75%)'
-        }}
-      />
+        {/* Bottom Footer Light Blue Ambient Glow */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-[600px] pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse 90% 60% at 50% 110%, rgba(144, 202, 249, 0.35), transparent 75%)'
+          }}
+        />
+      </div>
 
       <div className="relative z-10">
         {/* Opening Preloader: 'prep' drops from the air onto the center screen */}

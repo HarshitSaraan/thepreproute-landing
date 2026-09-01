@@ -18,7 +18,7 @@ export const PlnAndPricing = {
   get: "PlanPricing/get",
   getPlanandPricingCUETEXAM: "PlanPricing/cuetExam",
   update: "PlanPricing/update",
-  getPlanandPricingdashboard: "PlanPricing/getDashboardPlanPrising",
+  getPlanandPricingdashboard: "PlanPricing/get",
 };
 
 export const coupon = {
